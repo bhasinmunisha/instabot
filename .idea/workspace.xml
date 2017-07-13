@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8f714f6d-2e3b-4a9e-a801-7d5cc99ffcd7" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/instabot.py" afterPath="$PROJECT_DIR$/instabot.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,8 +17,8 @@
       <file leaf-file-name="instabot.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/instabot.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3917">
-              <caret line="344" column="34" lean-forward="false" selection-start-line="344" selection-start-column="34" selection-end-line="344" selection-end-column="34" />
+            <state relative-caret-position="-265">
+              <caret line="303" column="107" lean-forward="false" selection-start-line="303" selection-start-column="107" selection-end-line="303" selection-end-column="107" />
               <folding>
                 <element signature="e#64#79#0" expanded="true" />
               </folding>
@@ -509,8 +508,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/instabot.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3917">
-          <caret line="344" column="34" lean-forward="false" selection-start-line="344" selection-start-column="34" selection-end-line="344" selection-end-column="34" />
+        <state relative-caret-position="-265">
+          <caret line="303" column="107" lean-forward="false" selection-start-line="303" selection-start-column="107" selection-end-line="303" selection-end-column="107" />
           <folding>
             <element signature="e#64#79#0" expanded="true" />
           </folding>

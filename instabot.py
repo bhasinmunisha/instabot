@@ -283,6 +283,7 @@ def start_bot():
         user_info = requests.get(request_url).json()
         if user_info['meta']['code'] == 200:
             if len(user_info['data']):
+                #The bot should ask the username for which you want to perform any of the action.
                 print "%s are you want to perform action for yourself or another user" % (user_info['data']['username'])
                 print"please choose option from here"
                 print"a.for yourself operation"
@@ -300,6 +301,7 @@ def start_bot():
                     print("astha_rc")
                     print("ruchikagarg764")
                     insta_username = raw_input("enter the username of the user")
+                    #The bot should ask the user of what they want to do for the username already provided.
                     print "4.Get details of a user by username\n"
                     print "5.Get the recent post of a user by username\n"
                     print "6.Get a list of people who have liked the recent post of a user\n"
