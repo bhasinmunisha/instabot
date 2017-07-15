@@ -173,10 +173,13 @@ def get_comment_list(insta_username):
     if get_list['meta']['code'] == 200:
         i=0
         while(i<len(get_list['data'])):
-            print "comment is %s"%(get_list['data'][i]['text'])
+            print "commented by %s and comment is %s "%(get_list['data'][i]['from']['username'],get_list['data'][i]['text'])
             i=i+1
-        #printing of meesage on getting all comments
-        print " yipeeee!post comments are fetched successfully."
+        if(len(get_list['data'])>0):
+           #printing of meesage on getting all comments
+           print"yipee!comments are fetched successfully"
+        else:
+            print"no comments on the post"
     else:
         print" error!status code other then 200 received"
 
@@ -192,8 +195,11 @@ def get_like_list(insta_username):
         while(i<len(get_list['data'])):
             print "liked by %s"%(get_list['data'][i]['username'])
             i=i+1
-        #printing of meesage on getting all user that liked
-        print " yipeeee! username who liked post are fetched successfully."
+        if(len(get_list['data'])>0):
+            #printing of meesage on getting all user that liked
+            print " yipeeee! username who liked post are fetched successfully."
+        else:
+            print"no likes on the post"
     else:
         print" error!status code other then 200 received"
 
@@ -265,7 +271,7 @@ def iterate_through_negative_comments(media_id):
     print 'GET request url : %s' % (request_url)
     comment_info = requests.get(request_url).json()
     if comment_info['meta']['code'] == 200:
-        if len(comment_info['data']):
+        if (len(comment_info['data'])):
             for x in range(0, len(comment_info['data'])):
                 comment_id = comment_info['data'][x]['id']
                 comment_text = comment_info['data'][x]['text']
@@ -273,6 +279,68 @@ def iterate_through_negative_comments(media_id):
                 blob = TextBlob(comment_text, analyzer=NaiveBayesAnalyzer())
                 if (blob.sentiment.p_neg > blob.sentiment.p_pos):
                     print 'Negative comment is : %s' % (comment_text)
+        else:
+             print"no negative comments"
+
+#function definition to find the post with minimum number of likes
+def minimum_number_of_likes(insta_username):
+    user_id=get_user_id(insta_username)
+    request_url = (BASE_URL + 'users/%s/media/recent/?access_token=%s') % (user_id, APP_ACCESS_TOKEN)
+    print 'GET request url: %s' % (request_url)
+    user_media = requests.get(request_url).json()
+    if user_media['meta']['code'] == 200:
+        #condition to check that account have post or not
+        if len(user_media['data']):
+            like=[]
+            i=0
+            while(i<len(user_media['data'])):
+               likes_on_post=user_media['data'][i]['likes']['count']
+               like.append(likes_on_post)
+               i=i+1
+            min_like= min(like)
+            j=0
+            while(j<len(like)):
+                if(like[j]==min_like):
+                    image_name = user_media['data'][j]['id'] + '.jpeg'
+                    image_url = user_media['data'][j]['images']['standard_resolution']['url']
+                    urllib.urlretrieve(image_url, image_name)
+                    print image_url
+                    print 'the post comtaining minimum munber of likes is open on clicking above link.Your image has been downloaded!'
+                j=j+1
+        else:
+            print"this account have zero post"
+    else:
+        print"status code other then 200 received"
+
+#function definition to find the post with particular caption.
+def caption(insta_username):
+    user_id =get_user_id(insta_username)
+    request_url = (BASE_URL + 'users/%s/media/recent/?access_token=%s') % (user_id, APP_ACCESS_TOKEN)
+    print 'GET request url: %s' % (request_url)
+    user_media = requests.get(request_url).json()
+    if user_media['meta']['code'] == 200:
+        if len(user_media['data']):
+            #caption has a particular text
+            texts=raw_input("enter the particular text for which you want to search post")
+            i=0
+            while(i<len(user_media['data'])):
+                caption_of_post = user_media['data'][i]['caption']['text']
+                print caption_of_post
+                words = []
+                words = caption_of_post.split()
+                j = 0
+                while(j<len(words)):
+                    if (words[j] == texts):
+                        image_name = user_media['data'][i]['id'] + '.jpeg'
+                        image_url = user_media['data'][i]['images']['standard_resolution']['url']
+                        urllib.urlretrieve(image_url, image_name)
+                        print image_url
+                        print 'the post comtaining desired caption is open on clicking above link.Your image has been downloaded!'
+                    j = j + 1
+                i=i+1
+
+        else:
+            print"no post on this account"
 
 #function declaration to start the boot
 def start_bot():
@@ -291,14 +359,23 @@ def start_bot():
                 choose = raw_input("choose from a or b\n")
                 if (choose == 'a'):
                     # menu to choose which task is to be performed
+                    insta_username=user_info['data']['username']
                     print "1.Get your own details\n"
                     print "2.Get your own recent post\n"
                     print "3.to get the recent media liked by the user.\n"
-                    print "12.exit"
+                    print "6.Get a list of people who have liked the recent post of a your\n"
+                    print "7.Like the recent post of your\n"
+                    print "8.Get a list of comments on the recent post of a your\n"
+                    print "9.Make a comment on the recent post of a your\n"
+                    print "10.Delete negative comments from the recent post of a your\n"
+                    print"11.to iterate through the negative comments on a post"
+                    print"12.to find the post with minimum number of likes on a post\n"
+                    print"13.to find the post with particular caption"
+                    print "14.exit"
                 elif (choose == 'b'):
                     # menu to choose which task is to be performed
                     print("my sanbox users are")
-                    print("astha_rc")
+                    print("astha_rc_")
                     print("ruchikagarg764")
                     insta_username = raw_input("enter the username of the user")
                     #The bot should ask the user of what they want to do for the username already provided.
@@ -310,7 +387,8 @@ def start_bot():
                     print "9.Make a comment on the recent post of a user\n"
                     print "10.Delete negative comments from the recent post of a user\n"
                     print"11.to iterate through the negative comments on a post"
-                    print "12.Exit"
+                    print"12.to find the post with minimum number of likes on a post"
+                    print "14.Exit"
                 else:
                     print("wrong choice")
                     exit()
@@ -339,7 +417,11 @@ def start_bot():
                 elif choice=="11":
                     media_id=get_post_id(insta_username)
                     iterate_through_negative_comments(media_id)
-                elif choice=="12":
+                elif choice=='12':
+                    minimum_number_of_likes(insta_username)
+                elif choice=="13":
+                    caption(insta_username)
+                elif choice=="14":
                     exit()
                 else:
                     print "wrong choice"
